@@ -1,7 +1,9 @@
 package com.andrey;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+
+import org.apache.ibatis.annotations.*;
+
+import java.util.List;
 
 /**
  * Access to CRUD methods.
@@ -10,5 +12,22 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
  * @version 1.0
  */
 
-public interface CurrencyRepository extends JpaRepository<Currency, Long>, JpaSpecificationExecutor<Account> {
+@Mapper
+public interface CurrencyRepository extends BaseRepository<Currency> {
+
+    @Select("SELECT * FROM currency WHERE id = #{id}")
+    Currency getById(Long id);
+
+    @Insert("INSERT INTO currency(type) " +
+            " VALUES (#{type})")
+    void add(Currency currency);
+
+    @Update("Update currency set type=#{type} WHERE id=#{id}")
+    void update(Currency currency);
+
+    @Delete("DELETE FROM currency WHERE id = #{id}")
+    void deleteById(Long id);
+
+    @Select("select * from currency")
+    List<Currency> findAll();
 }

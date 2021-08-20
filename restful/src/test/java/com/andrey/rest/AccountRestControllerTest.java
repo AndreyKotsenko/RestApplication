@@ -71,7 +71,7 @@ class AccountRestControllerTest {
 
         log.info("balance = " + balance);
         for(Operation operation : operations){
-            if(operation.getTypeOperation().getId() == 1){
+            if(operation.getType_operation_id() == 1){
                 balance += operation.getTotal_sum();
             }else{
                 balance -= operation.getTotal_sum();
@@ -84,13 +84,13 @@ class AccountRestControllerTest {
         log.info("balance = " + balance);
         log.info(mockMvc.perform(get("/account/balance/" + ID + "?date=" + DATE)) + "- this it");
         //WHEN
-        mockMvc.perform(get("/account/balance/" + ID + "?date=" + DATE)
+        mockMvc.perform(get("/account/balance/" + ID)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(String.valueOf(balance/100)));
 
         //THEN
-        Mockito.verify(accountService, Mockito.times(2)).getBalanceByDate(any(), any());
+        Mockito.verify(accountService, Mockito.times(1)).getBalanceByDate(any(), any());
         Mockito.verifyNoMoreInteractions(accountService);
     }
 

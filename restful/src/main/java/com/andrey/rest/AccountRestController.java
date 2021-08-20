@@ -10,7 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
-import java.sql.Date;
+import java.util.Date;
 import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
@@ -53,7 +53,7 @@ public class AccountRestController {
     public ResponseEntity<Double> getBalanceByDate(@RequestParam(value = "date", required = false) Date date, @PathVariable("id") Long id){
 
         if(date == null){
-            date = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+            date = new Date();
         }
         if( id == null){
             return new ResponseEntity<Double>(HttpStatus.BAD_REQUEST);

@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.andrey.datatest.DateGeneratorForTest.ID;
@@ -22,7 +23,10 @@ class CategoryServiceImpTest {
     private CategoryServiceImp categoryService;
 
     @Mock
-    private JpaRepository<Category, Long> repository ;
+    private BaseRepository<Category> repository;
+
+    @Mock
+    HttpServletRequest requestMethod;
 
 
     @Mock
@@ -53,7 +57,8 @@ class CategoryServiceImpTest {
     void save() {
         //GIVEN
         Category category = DateGeneratorForTest.generateCategory();
-        Mockito.when(repository.save(category)).thenReturn(category);
+        Mockito.doNothing().when(repository).add(any());
+        Mockito.when(requestMethod.getMethod()).thenReturn("POST");
 
         //WHEN
         categoryService.save(category);
@@ -61,7 +66,7 @@ class CategoryServiceImpTest {
 
 
         //THEN
-        Mockito.verify(repository).save(category);
+        Mockito.verify(repository).add(any());
         Mockito.verifyNoMoreInteractions(repository);
     }
 

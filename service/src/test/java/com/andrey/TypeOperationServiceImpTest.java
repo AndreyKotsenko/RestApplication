@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.andrey.datatest.DateGeneratorForTest.ID;
@@ -27,8 +28,10 @@ class TypeOperationServiceImpTest {
     private TypeOperationRepository typeOperationRepository;
 
     @Mock
-    private JpaRepository<TypeOperation, Long> repository ;
+    private BaseRepository<TypeOperation> repository;
 
+    @Mock
+    HttpServletRequest requestMethod;
 
     @Test
     void getById() {
@@ -55,7 +58,8 @@ class TypeOperationServiceImpTest {
     void save() {
         //GIVEN
         TypeOperation typeOperation = DateGeneratorForTest.generateTypeOperation();
-        Mockito.when(repository.save(typeOperation)).thenReturn(typeOperation);
+        Mockito.doNothing().when(repository).add(any());
+        Mockito.when(requestMethod.getMethod()).thenReturn("POST");
 
         //WHEN
         typeOperationService.save(typeOperation);
@@ -63,7 +67,7 @@ class TypeOperationServiceImpTest {
 
 
         //THEN
-        Mockito.verify(repository).save(typeOperation);
+        Mockito.verify(repository).add(any());
         Mockito.verifyNoMoreInteractions(repository);
     }
 

@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.andrey.datatest.DateGeneratorForTest.ID;
@@ -25,8 +26,10 @@ class CurrencyServiceImpTest {
     private CurrencyRepository currencyRepository;
 
     @Mock
-    private JpaRepository<Currency, Long> repository ;
+    private BaseRepository<Currency> repository;
 
+    @Mock
+    HttpServletRequest requestMethod;
 
 
     @Test
@@ -55,7 +58,8 @@ class CurrencyServiceImpTest {
 
         //GIVEN
         Currency currency = DateGeneratorForTest.generateCurrency();
-        Mockito.when(repository.save(currency)).thenReturn(currency);
+        Mockito.doNothing().when(repository).add(any());
+        Mockito.when(requestMethod.getMethod()).thenReturn("POST");
 
         //WHEN
         currencyService.save(currency);
@@ -63,7 +67,7 @@ class CurrencyServiceImpTest {
 
 
         //THEN
-        Mockito.verify(repository).save(currency);
+        Mockito.verify(repository).add(any());
         Mockito.verifyNoMoreInteractions(repository);
     }
 

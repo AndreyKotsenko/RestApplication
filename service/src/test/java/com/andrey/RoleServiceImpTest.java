@@ -10,6 +10,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.andrey.datatest.DateGeneratorForTest.ID;
@@ -27,7 +28,10 @@ class RoleServiceImpTest {
     private RoleRepository roleRepository;
 
     @Mock
-    private JpaRepository<Role, Long> repository ;
+    private BaseRepository<Role> repository;
+
+    @Mock
+    HttpServletRequest requestMethod;
 
 
     @Test
@@ -56,7 +60,8 @@ class RoleServiceImpTest {
 
         //GIVEN
         Role role = DateGeneratorForTest.generateRole();
-        Mockito.when(repository.save(role)).thenReturn(role);
+        Mockito.doNothing().when(repository).add(any());
+        Mockito.when(requestMethod.getMethod()).thenReturn("POST");
 
         //WHEN
         roleService.save(role);
@@ -64,7 +69,7 @@ class RoleServiceImpTest {
 
 
         //THEN
-        Mockito.verify(repository).save(role);
+        Mockito.verify(repository).add(any());
         Mockito.verifyNoMoreInteractions(repository);
     }
 

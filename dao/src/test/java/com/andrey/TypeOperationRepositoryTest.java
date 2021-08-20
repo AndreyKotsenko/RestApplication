@@ -4,9 +4,12 @@ import com.andrey.datatest.DateGeneratorForTest;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Comparator;
 import java.util.List;
@@ -15,7 +18,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@DataJpaTest
+@RunWith(SpringRunner.class)
+@MybatisTest
 class TypeOperationRepositoryTest {
     @Autowired
     private TypeOperationRepository typeOperationRepository;
@@ -30,7 +34,7 @@ class TypeOperationRepositoryTest {
         TypeOperation typeOperation = DateGeneratorForTest.generateTypeOperation();
         typeOperation.setId((long)1);
 
-        typeOperationRepository.save(typeOperation);
+        typeOperationRepository.add(typeOperation);
 
 
         TypeOperation typeOperationOut = typeOperationRepository.getById((long)1);
@@ -46,7 +50,7 @@ class TypeOperationRepositoryTest {
     void save() {
         TypeOperation typeOperation = DateGeneratorForTest.generateTypeOperation();
         typeOperation.setId((long)1);
-        typeOperationRepository.save(typeOperation);
+        typeOperationRepository.add(typeOperation);
 
 
         TypeOperation typeOperationOut = typeOperationRepository.getById((long)1);
@@ -63,7 +67,7 @@ class TypeOperationRepositoryTest {
 
         TypeOperation typeOperation = DateGeneratorForTest.generateTypeOperation();
         typeOperation.setId((long)1);
-        typeOperationRepository.save(typeOperation);
+        typeOperationRepository.add(typeOperation);
 
         TypeOperation typeOperationOut = typeOperationRepository.getById((long)1);
 
@@ -72,7 +76,7 @@ class TypeOperationRepositoryTest {
         typeOperationOut = null;
         typeOperationRepository.deleteById((long)1);
 
-        Optional<TypeOperation> optionalTypeOperation = typeOperationRepository.findById((long)1);
+        Optional<TypeOperation> optionalTypeOperation = Optional.ofNullable(typeOperationRepository.getById((long) 1));
 
         if(optionalTypeOperation.isPresent()){
             typeOperationOut = optionalTypeOperation.get();
@@ -91,7 +95,7 @@ class TypeOperationRepositoryTest {
             i++;
 
             typeOperation.setId((long)i);
-            typeOperationRepository.save(typeOperation);
+            typeOperationRepository.add(typeOperation);
 
         }
 

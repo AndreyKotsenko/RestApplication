@@ -1,14 +1,19 @@
 package com.andrey;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.web.bind.annotation.RequestMethod;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+
 
 public abstract class BaseService<T> {
 
     @Autowired
-    JpaRepository<T, Long> repository;
+    BaseRepository<T> repository;
+
+    @Autowired
+    HttpServletRequest requestMethod;
 
 
     public T getById(Long id) {
@@ -17,7 +22,11 @@ public abstract class BaseService<T> {
 
 
     public void save(T object) {
-        repository.save(object);
+        if ("POST".equalsIgnoreCase(requestMethod.getMethod())) {
+            repository.add(object);
+        } else {
+            repository.update(object);
+        }
     }
 
 

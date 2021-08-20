@@ -50,7 +50,7 @@ class UserRestControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.mobileNumber").value(user.getMobileNumber()));
+                .andExpect(jsonPath("$.mobile_number").value(user.getMobile_number()));
 
         //THEN
         Mockito.verify(userService).getById(ID);
@@ -69,7 +69,7 @@ class UserRestControllerTest {
                 .content(new ObjectMapper().writeValueAsString(user)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.mobileNumber").value(user.getMobileNumber()));
+                .andExpect(jsonPath("$.mobile_number").value(user.getMobile_number()));
         //THEN
 
         Mockito.verify(userService).save(any());
@@ -88,7 +88,7 @@ class UserRestControllerTest {
                 .content(new ObjectMapper().writeValueAsString(user)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(ID))
-                .andExpect(jsonPath("$.mobileNumber").value(user.getMobileNumber()));
+                .andExpect(jsonPath("$.mobile_number").value(user.getMobile_number()));
         //THEN
 
         Mockito.verify(userService).save(any());

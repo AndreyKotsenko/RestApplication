@@ -30,41 +30,8 @@ public class OperationServiceImp extends BaseService<Operation> implements Opera
 
     @Override
     public List<Operation> getAllByFilter(Filter filter) {
-        MySpecification<Operation> mySpecification = new MySpecification<Operation>();
 
-        if(filter.getAccount_id() != null){
-            mySpecification.add(new SearchCriteria("account_from/account_to", filter.getAccount_id(), SearchOperation.OR_EQUAL));
-        }
-
-        if(filter.getTypeOperation_id() != null){
-            mySpecification.add(new SearchCriteria("typeOperation", filter.getTypeOperation_id(), SearchOperation.IN));
-        }
-
-        if(filter.getCategory_id() != null){
-            mySpecification.add(new SearchCriteria("category", filter.getCategory_id(), SearchOperation.IN));
-        }
-
-        if(filter.getGroup_category_id() != null){
-            mySpecification.add(new SearchCriteria("category/groupCategory", filter.getGroup_category_id(), SearchOperation.JOIN_EQUAL));
-        }
-
-        // for date interval
-        if(filter.getStartDateOperation() != null && filter.getEndDateOperation() == null){
-            log.info("I am here " +filter.getStartDateOperation() + " ---- " + filter.getEndDateOperation());
-            mySpecification.add(new SearchCriteria("date_operation", filter.getStartDateOperation(), SearchOperation.GREATER_THAN_EQUAL_FOR_DATE));
-        }else if(filter.getStartDateOperation() == null && filter.getEndDateOperation() != null){
-            log.info("I am here " +filter.getStartDateOperation() + " ---- " + filter.getEndDateOperation());
-            mySpecification.add(new SearchCriteria("date_operation", filter.getEndDateOperation(), SearchOperation.LESS_THAN_EQUAL_FOR_DATE));
-        }else if(filter.getStartDateOperation() != null && filter.getEndDateOperation() != null){
-            log.info("I am here " +filter.getStartDateOperation() + " ---- " + filter.getEndDateOperation());
-            mySpecification.add(new SearchCriteria("date_operation", filter.getStartDateOperation(), SearchOperation.GREATER_THAN_EQUAL_FOR_DATE));
-            mySpecification.add(new SearchCriteria("date_operation", filter.getEndDateOperation(), SearchOperation.LESS_THAN_EQUAL_FOR_DATE));
-        }
-
-
-
-
-        List<Operation> operationsByFilter = operationRepository.findAll(mySpecification);
+        List<Operation> operationsByFilter = operationRepository.findAllByFilter(filter);
         log.info("I am here" + operationsByFilter);
         return operationsByFilter;
     }

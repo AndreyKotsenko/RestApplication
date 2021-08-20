@@ -4,9 +4,13 @@ import com.andrey.datatest.DateGeneratorForTest;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Comparator;
 import java.util.List;
@@ -15,7 +19,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@DataJpaTest
+@RunWith(SpringRunner.class)
+@MybatisTest
 class RoleRepositoryTest {
 
     @Autowired
@@ -31,7 +36,7 @@ class RoleRepositoryTest {
         Role role = DateGeneratorForTest.generateRole();
         role.setId((long)1);
 
-        roleRepository.save(role);
+        roleRepository.add(role);
 
 
         Role roleOut = roleRepository.getById((long)1);
@@ -47,7 +52,7 @@ class RoleRepositoryTest {
     void save() {
         Role role = DateGeneratorForTest.generateRole();
         role.setId((long)1);
-        roleRepository.save(role);
+        roleRepository.add(role);
 
 
         Role roleOut = roleRepository.getById((long)1);
@@ -64,7 +69,7 @@ class RoleRepositoryTest {
 
         Role role = DateGeneratorForTest.generateRole();
         role.setId((long)1);
-        roleRepository.save(role);
+        roleRepository.add(role);
 
         Role roleOut = roleRepository.getById((long)1);
 
@@ -73,7 +78,7 @@ class RoleRepositoryTest {
         roleOut = null;
         roleRepository.deleteById((long)1);
 
-        Optional<Role> optionalRole = roleRepository.findById((long)1);
+        Optional<Role> optionalRole = Optional.ofNullable(roleRepository.getById((long) 1));
 
         if(optionalRole.isPresent()){
             roleOut = optionalRole.get();
@@ -92,7 +97,7 @@ class RoleRepositoryTest {
             i++;
 
             role.setId((long)i);
-            roleRepository.save(role);
+            roleRepository.add(role);
 
         }
 

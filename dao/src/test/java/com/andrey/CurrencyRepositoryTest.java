@@ -4,9 +4,12 @@ import com.andrey.datatest.DateGeneratorForTest;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Comparator;
 import java.util.List;
@@ -15,7 +18,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@DataJpaTest
+@RunWith(SpringRunner.class)
+@MybatisTest
 class CurrencyRepositoryTest {
 
     @Autowired
@@ -30,7 +34,7 @@ class CurrencyRepositoryTest {
 
         Currency currency = DateGeneratorForTest.generateCurrency();
         currency.setId((long)1);
-        currencyRepository.save(currency);
+        currencyRepository.add(currency);
 
 
         Currency currencyOut = currencyRepository.getById((long)1);
@@ -46,7 +50,7 @@ class CurrencyRepositoryTest {
     void save() {
         Currency currency = DateGeneratorForTest.generateCurrency();
         currency.setId((long)1);
-        currencyRepository.save(currency);
+        currencyRepository.add(currency);
 
 
         Currency currencyOut = currencyRepository.getById((long)1);
@@ -63,7 +67,7 @@ class CurrencyRepositoryTest {
 
         Currency currency = DateGeneratorForTest.generateCurrency();
         currency.setId((long)1);
-        currencyRepository.save(currency);
+        currencyRepository.add(currency);
 
         Currency currencyOut = currencyRepository.getById((long)1);
 
@@ -72,7 +76,7 @@ class CurrencyRepositoryTest {
         currencyOut = null;
         currencyRepository.deleteById((long)1);
 
-        Optional<Currency> optionalCurrency = currencyRepository.findById((long)1);
+        Optional<Currency> optionalCurrency = Optional.ofNullable(currencyRepository.getById((long) 1));
 
         if(optionalCurrency.isPresent()){
             currencyOut = optionalCurrency.get();
@@ -91,7 +95,7 @@ class CurrencyRepositoryTest {
             i++;
 
             currency.setId((long)i);
-            currencyRepository.save(currency);
+            currencyRepository.add(currency);
 
         }
 

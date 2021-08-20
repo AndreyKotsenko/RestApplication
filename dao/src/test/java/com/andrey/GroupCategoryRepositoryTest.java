@@ -4,9 +4,12 @@ import com.andrey.datatest.DateGeneratorForTest;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Comparator;
 import java.util.List;
@@ -15,7 +18,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@DataJpaTest
+@RunWith(SpringRunner.class)
+@MybatisTest
 class GroupCategoryRepositoryTest {
 
     @Autowired
@@ -30,7 +34,7 @@ class GroupCategoryRepositoryTest {
 
         GroupCategory groupCategory = DateGeneratorForTest.generateGroupCategory();
         groupCategory.setId((long)1);
-        groupCategoryRepository.save(groupCategory);
+        groupCategoryRepository.add(groupCategory);
 
 
         GroupCategory groupCategoryOut = groupCategoryRepository.getById((long)1);
@@ -46,7 +50,7 @@ class GroupCategoryRepositoryTest {
     void save() {
         GroupCategory groupCategory = DateGeneratorForTest.generateGroupCategory();
         groupCategory.setId((long)1);
-        groupCategoryRepository.save(groupCategory);
+        groupCategoryRepository.add(groupCategory);
 
 
         GroupCategory groupCategoryOut = groupCategoryRepository.getById((long)1);
@@ -63,7 +67,7 @@ class GroupCategoryRepositoryTest {
 
         GroupCategory groupCategory = DateGeneratorForTest.generateGroupCategory();
         groupCategory.setId((long)1);
-        groupCategoryRepository.save(groupCategory);
+        groupCategoryRepository.add(groupCategory);
 
         GroupCategory groupCategoryOut = groupCategoryRepository .getById((long)1);
 
@@ -72,7 +76,7 @@ class GroupCategoryRepositoryTest {
         groupCategoryOut = null;
         groupCategoryRepository.deleteById((long)1);
 
-        Optional<GroupCategory> optionalGroupCategory = groupCategoryRepository.findById((long)1);
+        Optional<GroupCategory> optionalGroupCategory = Optional.ofNullable(groupCategoryRepository.getById((long) 1));
 
         if(optionalGroupCategory.isPresent()){
             groupCategoryOut = optionalGroupCategory.get();
@@ -91,7 +95,7 @@ class GroupCategoryRepositoryTest {
             i++;
 
             groupCategory.setId((long)i);
-            groupCategoryRepository.save(groupCategory);
+            groupCategoryRepository.add(groupCategory);
 
         }
 

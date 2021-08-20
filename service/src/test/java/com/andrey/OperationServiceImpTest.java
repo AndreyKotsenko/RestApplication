@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -30,7 +31,10 @@ class OperationServiceImpTest {
     private OperationRepository operationRepository;
 
     @Mock
-    private JpaRepository<Operation, Long> repository ;
+    private BaseRepository<Operation> repository;
+
+    @Mock
+    HttpServletRequest requestMethod;
 
 
     @Test
@@ -60,7 +64,8 @@ class OperationServiceImpTest {
 
         //GIVEN
         Operation operation = DateGeneratorForTest.generateOperation();
-        Mockito.when(repository.save(operation)).thenReturn(operation);
+        Mockito.doNothing().when(repository).add(any());
+        Mockito.when(requestMethod.getMethod()).thenReturn("POST");
 
         //WHEN
         operationService.save(operation);
@@ -68,7 +73,7 @@ class OperationServiceImpTest {
 
 
         //THEN
-        Mockito.verify(repository).save(operation);
+        Mockito.verify(repository).add(any());
         Mockito.verifyNoMoreInteractions(repository);
     }
 
@@ -124,14 +129,14 @@ class OperationServiceImpTest {
         for(Operation operation : operations){
 
             if(i%2 == 0){
-                operation.setAccount_from(new Account((long)1, "On", 200l));
+                operation.setAccount_id_from(1l);
                 operationsTest.add(operation);
             }else {
-                operation.setAccount_from(new Account((long)2, "Off", 400l));
+                operation.setAccount_id_from(2l);
             }
             i++;
         }
-        Mockito.when(operationRepository.findAll(any(MySpecification.class))).thenReturn(operationsTest);
+        Mockito.when(operationRepository.findAllByFilter(any(Filter.class))).thenReturn(operationsTest);
 
         //WHEN
         List<Operation> operationList = operationService.getAllByFilter(filter);
@@ -144,7 +149,7 @@ class OperationServiceImpTest {
 
 
 
-        Mockito.verify(operationRepository).findAll(any(MySpecification.class));
+        Mockito.verify(operationRepository).findAllByFilter(any(Filter.class));
         Mockito.verifyNoMoreInteractions(operationRepository);
     }
 
@@ -161,14 +166,14 @@ class OperationServiceImpTest {
         int i = 0;
         for(Operation operation : operations){
             if(i%2 == 0){
-                operation.setAccount_from(new Account((long)1, "On", 200l));
+                operation.setAccount_id_from(1l);
                 operationsTest.add(operation);
             }else {
-                operation.setAccount_from(new Account((long)2, "Off", 400l));
+                operation.setAccount_id_from(2l);
             }
             i++;
         }
-        Mockito.when(operationRepository.findAll(any(MySpecification.class))).thenReturn(operationsTest);
+        Mockito.when(operationRepository.findAllByFilter(any(Filter.class))).thenReturn(operationsTest);
         log.info("Operation test list = " + operationsTest);
 
         //WHEN
@@ -184,7 +189,7 @@ class OperationServiceImpTest {
 
 
 
-        Mockito.verify(operationRepository).findAll(any(MySpecification.class));
+        Mockito.verify(operationRepository).findAllByFilter(any(Filter.class));
         Mockito.verifyNoMoreInteractions(operationRepository);
     }
 }

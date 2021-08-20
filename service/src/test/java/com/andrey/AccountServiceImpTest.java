@@ -2,7 +2,9 @@ package com.andrey;
 
 import com.andrey.criteria.MySpecification;
 import com.andrey.datatest.DateGeneratorForTest;
+import com.andrey.filter.Filter;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.connector.Request;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,6 +13,10 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.web.bind.annotation.RequestMethod;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequestWrapper;
 
 import static com.andrey.datatest.DateGeneratorForTest.DATE;
 import static com.andrey.datatest.DateGeneratorForTest.ID;
@@ -31,7 +37,11 @@ class AccountServiceImpTest {
     private AccountServiceImp accountService;
 
     @Mock
-    private JpaRepository<Account, Long> repository ;
+    private BaseRepository<Account> repository;
+
+    @Mock
+    HttpServletRequest requestMethod;
+
 
     @Mock
     private AccountRepository accountRepository;
@@ -66,7 +76,9 @@ class AccountServiceImpTest {
 
         //GIVEN
         Account account = DateGeneratorForTest.generateAccount();
-        Mockito.when(repository.save(account)).thenReturn(account);
+        Mockito.doNothing().when(repository).add(any());
+        Mockito.when(requestMethod.getMethod()).thenReturn("POST");
+
 
         //WHEN
         accountService.save(account);
@@ -74,7 +86,7 @@ class AccountServiceImpTest {
 
 
         //THEN
-        Mockito.verify(repository).save(account);
+        Mockito.verify(repository).add(any());
         Mockito.verifyNoMoreInteractions(repository);
 
     }
@@ -123,7 +135,7 @@ class AccountServiceImpTest {
         Account account = DateGeneratorForTest.generateAccount();
         account.setOperations(DateGeneratorForTest.generateOperationList( 5));
         Mockito.when(accountRepository.getById(ID)).thenReturn(account);
-        Mockito.when(operationRepository.findAll(any(MySpecification.class))).thenReturn(account.getOperations());
+        Mockito.when(operationRepository.findAllByFilter(any(Filter.class))).thenReturn(account.getOperations());
         log.info("Account = " + account);
 
         //WHEN
@@ -131,7 +143,7 @@ class AccountServiceImpTest {
 
         //THEN
         assertThat(balance).isEqualTo(account.getBalance() - 100 * 5);
-        log.info("Operayions =" + account.getOperations()  );
+        log.info("Operations =" + account.getOperations()  );
         log.info("balance = " + balance + " dbgdfbhd = " + (account.getBalance() - 100 * 5) );
 
         Mockito.verify(accountRepository, times(1)).getById(ID);

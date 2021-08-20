@@ -27,6 +27,10 @@ public class Filter extends Operation {
 
     private Long group_category_id;
 
+    private Long user_id;
+
+    private String mobileNumber;
+
     private Long account_id;
 
     private Long currency_id;
@@ -91,5 +95,21 @@ public class Filter extends Operation {
 
     public void setEndDateOperation(Date endDateOperation) {
         this.endDateOperation = endDateOperation;
+    }
+
+    public Long getUser_id() {
+        return user_id;
+    }
+
+    public void setUser_id(Long user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getMobileNumber() {
+        return mobileNumber;
+    }
+
+    public void setMobileNumber(String mobileNumber) {
+        this.mobileNumber = mobileNumber;
     }
 }

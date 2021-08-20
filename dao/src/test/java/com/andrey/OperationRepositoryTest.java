@@ -4,9 +4,12 @@ import com.andrey.datatest.DateGeneratorForTest;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Comparator;
 import java.util.List;
@@ -15,7 +18,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@DataJpaTest
+@RunWith(SpringRunner.class)
+@MybatisTest
 class OperationRepositoryTest {
 
     @Autowired
@@ -31,7 +35,7 @@ class OperationRepositoryTest {
         Operation operation = DateGeneratorForTest.generateOperationWithoutForeignKey();
         operation.setId((long)1);
 
-        operationRepository.save(operation);
+        operationRepository.add(operation);
 
 
         Operation operationOut = operationRepository.getById((long)1);
@@ -47,7 +51,7 @@ class OperationRepositoryTest {
     void save() {
         Operation operation = DateGeneratorForTest.generateOperationWithoutForeignKey();
         operation.setId((long)1);
-        operationRepository.save(operation);
+        operationRepository.add(operation);
 
 
         Operation operationOut = operationRepository.getById((long)1);
@@ -64,7 +68,7 @@ class OperationRepositoryTest {
 
         Operation operation = DateGeneratorForTest.generateOperationWithoutForeignKey();
         operation.setId((long)1);
-        operationRepository.save(operation);
+        operationRepository.add(operation);
 
         Operation operationOut = operationRepository .getById((long)1);
 
@@ -73,7 +77,7 @@ class OperationRepositoryTest {
         operationOut = null;
         operationRepository.deleteById((long)1);
 
-        Optional<Operation> optionalOperation = operationRepository.findById((long)1);
+        Optional<Operation> optionalOperation = Optional.ofNullable(operationRepository.getById((long) 1));
 
         if(optionalOperation.isPresent()){
             operationOut = optionalOperation.get();
@@ -92,7 +96,7 @@ class OperationRepositoryTest {
             i++;
 
             operation.setId((long)i);
-            operationRepository.save(operation);
+            operationRepository.add(operation);
 
         }
 

@@ -72,10 +72,10 @@ class OperationRestControllerTest {
         for(Operation operation : operations){
 
             if(i%2 == 0){
-                operation.setAccount_from(new Account((long)1, "On", 200l));
+                operation.setAccount_id_from(1l);
                 operationsTest.add(operation);
             }else {
-                operation.setAccount_from(new Account((long)2, "Off", 400l));
+                operation.setAccount_id_from(2l);
             }
             i++;
         }
@@ -113,11 +113,11 @@ class OperationRestControllerTest {
         for(Operation operation : operations){
 
             if(i%2 == 0){
-                operation.setAccount_from(new Account((long)1, "On", 200l));
+                operation.setAccount_id_from(1l);
                 operationsTest.add(operation);
                 sum+= operation.getTotal_sum();
             }else {
-                operation.setAccount_from(new Account((long)2, "Off", 400l));
+                operation.setAccount_id_from(2l);
             }
             i++;
         }

@@ -4,9 +4,11 @@ import com.andrey.datatest.DateGeneratorForTest;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringRunner;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -15,7 +17,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @Slf4j
-@DataJpaTest
+@RunWith(SpringRunner.class)
+@MybatisTest
 class AccountRepositoryTest {
 
     @Autowired
@@ -25,12 +28,13 @@ class AccountRepositoryTest {
 
 
     @Test
-    @Rollback(value = false)
     void getById() {
 
+
         Account account = DateGeneratorForTest.generateAccount();
-        account.setId((long)1);
-        accountRepository.save(account);
+        account.setId(1l);
+
+        accountRepository.add(account);
 
         log.info("My account = " + account);
         Account accountOut = accountRepository.getById((long)1);
@@ -39,6 +43,10 @@ class AccountRepositoryTest {
         assertNotNull(accountOut);
         assertEquals(accountOut.getId(), account.getId());
 
+//        Account account = accountRepository.getById(1l);
+        log.info("My acc = " + account);
+        assertEquals(account.getId(), 1l);
+
     }
 
     @Test
@@ -46,7 +54,7 @@ class AccountRepositoryTest {
     void save() {
         Account account = DateGeneratorForTest.generateAccount();
         account.setId((long)1);
-        accountRepository.save(account);
+        accountRepository.add(account);
 
         log.info("My account = " + account);
         Account accountOut = accountRepository.getById((long)1);
@@ -63,7 +71,7 @@ class AccountRepositoryTest {
 
         Account account = DateGeneratorForTest.generateAccount();
         account.setId((long)1);
-        accountRepository.save(account);
+        accountRepository.add(account);
 
         Account accountOut = accountRepository.getById((long)1);
         log.info("AccountOut = " + accountOut);
@@ -72,7 +80,7 @@ class AccountRepositoryTest {
         accountOut = null;
         accountRepository.deleteById((long)1);
 
-        Optional<Account> optionalAccount = accountRepository.findById((long)1);
+        Optional<Account> optionalAccount = Optional.ofNullable(accountRepository.getById((long) 1));
 
         if(optionalAccount.isPresent()){
             accountOut = optionalAccount.get();
@@ -91,7 +99,7 @@ class AccountRepositoryTest {
             i++;
 
             account.setId((long)i);
-            accountRepository.save(account);
+            accountRepository.add(account);
 
         }
 

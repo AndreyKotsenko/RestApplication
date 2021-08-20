@@ -4,9 +4,13 @@ import com.andrey.datatest.DateGeneratorForTest;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Comparator;
 import java.util.List;
@@ -15,7 +19,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@DataJpaTest
+@RunWith(SpringRunner.class)
+@MybatisTest
 class CategoryRepositoryTest {
 
     @Autowired
@@ -30,7 +35,7 @@ class CategoryRepositoryTest {
 
         Category category = DateGeneratorForTest.generateCategory();
         category.setId((long)1);
-        categoryRepository.save(category);
+        categoryRepository.add(category);
 
 
         Category categoryOut = categoryRepository.getById((long)1);
@@ -46,7 +51,7 @@ class CategoryRepositoryTest {
     void save() {
         Category category = DateGeneratorForTest.generateCategory();
         category.setId((long)1);
-        categoryRepository.save(category);
+        categoryRepository.add(category);
 
 
         Category categoryOut = categoryRepository.getById((long)1);
@@ -63,7 +68,7 @@ class CategoryRepositoryTest {
 
         Category category = DateGeneratorForTest.generateCategory();
         category.setId((long)1);
-        categoryRepository.save(category);
+        categoryRepository.add(category);
 
         Category categoryOut = categoryRepository.getById((long)1);
 
@@ -72,7 +77,7 @@ class CategoryRepositoryTest {
         categoryOut = null;
         categoryRepository.deleteById((long)1);
 
-        Optional<Category> optionalCategory = categoryRepository.findById((long)1);
+        Optional<Category> optionalCategory = Optional.ofNullable(categoryRepository.getById((long) 1));
 
         if(optionalCategory.isPresent()){
             categoryOut = optionalCategory.get();
@@ -91,7 +96,7 @@ class CategoryRepositoryTest {
             i++;
 
             category.setId((long)i);
-            categoryRepository.save(category);
+            categoryRepository.add(category);
 
         }
 

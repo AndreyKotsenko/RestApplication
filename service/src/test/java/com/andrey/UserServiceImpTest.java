@@ -11,6 +11,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.andrey.datatest.DateGeneratorForTest.ID;
@@ -28,8 +29,10 @@ class UserServiceImpTest {
     private UserRepository userRepository;
 
     @Mock
-    private JpaRepository<User, Long> repository ;
+    private BaseRepository<User> repository;
 
+    @Mock
+    HttpServletRequest requestMethod;
 
     @Test
     void getById() {
@@ -56,7 +59,8 @@ class UserServiceImpTest {
     void save() {
         //GIVEN
         User user = DateGeneratorForTest.generateUser();
-        Mockito.when(repository.save(user)).thenReturn(user);
+        Mockito.doNothing().when(repository).add(any());
+        Mockito.when(requestMethod.getMethod()).thenReturn("POST");
 
         //WHEN
         userService.save(user);
@@ -64,7 +68,7 @@ class UserServiceImpTest {
 
 
         //THEN
-        Mockito.verify(repository).save(user);
+        Mockito.verify(repository).add(any());
         Mockito.verifyNoMoreInteractions(repository);
     }
 

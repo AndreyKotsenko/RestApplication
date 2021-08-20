@@ -3,7 +3,7 @@ package com.andrey.datatest;
 import com.andrey.*;
 import com.andrey.Currency;
 import com.andrey.filter.Filter;
-import java.sql.Date;
+import java.util.Date;
 import java.util.*;
 
 
@@ -17,7 +17,7 @@ import java.util.*;
 public class DateGeneratorForTest {
 
     public static final Long ID = new Random().nextLong();
-    public static final Date DATE = new java.sql.Date(Calendar.getInstance().getTime().getTime());
+    public static final Date DATE = new Date();
 
     //Generate for Account
     public static Account generateAccount(){
@@ -85,16 +85,16 @@ public class DateGeneratorForTest {
 
     //Generate for Operation
     public static Operation generateOperation(){
-        return new Operation(ID, DATE, "descr", 100l, new TypeOperation( (long)1),
-                new Category(), new Account(), new Account());
+        return new Operation(ID, DATE, "descr", 100l, (long)1,
+                1l, 1l, 1l);
     }
 
     public static List<Operation> generateOperationList(int count){
         List<Operation> operations = new LinkedList<>();
 
         for( int i = 0; i < count; i++){
-            operations.add(new Operation((long)i, DATE, "descr", 100l, new TypeOperation( (long)1),
-                    new Category(), new Account(ID, "2344 2354 5743 7523", 4000l), new Account()));
+            operations.add(new Operation((long)i, DATE, "descr", 100l, 1l,
+                    1l, ID, 1l));
         }
 
         return operations;
@@ -158,6 +158,7 @@ public class DateGeneratorForTest {
 
         for(int i = 0; i < count; i++){
             users.add(new User( (long)i, "generate name", "generate last name", "generate number"));
+            users.get(i).setPassword("1111");
         }
 
         return users;

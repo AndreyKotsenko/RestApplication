@@ -4,9 +4,12 @@ import com.andrey.datatest.DateGeneratorForTest;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.annotation.Rollback;
+import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Comparator;
 import java.util.List;
@@ -15,7 +18,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Slf4j
-@DataJpaTest
+@RunWith(SpringRunner.class)
+@MybatisTest
 class UserRepositoryTest {
 
     @Autowired
@@ -30,8 +34,9 @@ class UserRepositoryTest {
 
         User user = DateGeneratorForTest.generateUser();
         user.setId((long)1);
+        user.setPassword("1111");
 
-        userRepository.save(user);
+        userRepository.add(user);
 
 
         User userOut = userRepository.getById((long)1);
@@ -47,7 +52,8 @@ class UserRepositoryTest {
     void save() {
         User user = DateGeneratorForTest.generateUser();
         user.setId((long)1);
-        userRepository.save(user);
+        user.setPassword("1111");
+        userRepository.add(user);
 
 
         User userOut = userRepository.getById((long)1);
@@ -64,7 +70,8 @@ class UserRepositoryTest {
 
         User user = DateGeneratorForTest.generateUser();
         user.setId((long)1);
-        userRepository.save(user);
+        user.setPassword("1111");
+        userRepository.add(user);
 
         User userOut = userRepository.getById((long)1);
 
@@ -73,7 +80,7 @@ class UserRepositoryTest {
         userOut = null;
         userRepository.deleteById((long)1);
 
-        Optional<User> optionalUser = userRepository.findById((long)1);
+        Optional<User> optionalUser = Optional.ofNullable(userRepository.getById((long) 1));
 
         if(optionalUser.isPresent()){
             userOut = optionalUser.get();
@@ -92,7 +99,7 @@ class UserRepositoryTest {
             i++;
 
             user.setId((long)i);
-            userRepository.save(user);
+            userRepository.add(user);
 
         }
 

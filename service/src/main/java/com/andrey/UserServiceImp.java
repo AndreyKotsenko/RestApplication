@@ -24,6 +24,9 @@ public class UserServiceImp extends BaseService<User> implements UserService, Us
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    RoleRepository roleRepository;
+
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Override
@@ -32,16 +35,17 @@ public class UserServiceImp extends BaseService<User> implements UserService, Us
         log.info(" Mobile from form  = " + mobileNumber);
 
         User myUser= userRepository.findByMobileNumber(mobileNumber);
+
+        log.info("User = " + myUser + " role = " + myUser.getRole_id());
         if (myUser == null) {
             throw new UsernameNotFoundException("Unknown user with mobile number: " + mobileNumber);
         }
 
-        log.info("User from db = " + myUser.getMobileNumber() + " password = " + myUser.getPassword() + " role = " + myUser.getRole().getType());
 
         UserDetails user = org.springframework.security.core.userdetails.User.builder()
-                .username(myUser.getMobileNumber())
+                .username(myUser.getMobile_number())
                 .password(myUser.getPassword())
-                .roles(myUser.getRole().getType())
+                .roles(roleRepository.getById(myUser.getRole_id()).getType())
                 .build();
         return user;
     }

@@ -1,11 +1,9 @@
 package com.andrey;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import javax.persistence.*;
 import java.util.Collection;
 
 /**
@@ -16,36 +14,25 @@ import java.util.Collection;
  */
 
 
-@Entity
-@Table(name = "users")
+
 @Getter
 @Setter
 @ToString
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
 
-    @Column( name = "first_name")
     private String first_name;
 
-    @Column( name = "last_name")
     private String last_name;
 
-    @Column( name = "mobile_number")
-    private String mobileNumber;
+    private String mobile_number;
 
-    @Column( name = "password")
     private String password;
 
-    @ManyToOne
-    @JoinColumn(name = "role_id", referencedColumnName = "id")
-    @JsonBackReference(value = "user_role")
-    private Role role;
+    private Long role_id;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user", cascade = CascadeType.ALL)
-    @JsonIgnore
     private Collection<Account> accounts;
 
     public User(){
@@ -56,7 +43,7 @@ public class User {
         this.id = id;
         this.first_name = first_name;
         this.last_name = last_name;
-        this.mobileNumber = mobileNumber;
+        this.mobile_number = mobileNumber;
     }
 
     @Override
@@ -65,13 +52,10 @@ public class User {
                 "id=" + id +
                 ", first_name='" + first_name + '\'' +
                 ", last_name='" + last_name + '\'' +
-                ", mobile_number='" + mobileNumber + '\'' +
+                ", mobile_number='" + mobile_number + '\'' +
                 '}';
     }
 
-    public void setRole(Role role) {
-        this.role = role;
-    }
 
 
 }

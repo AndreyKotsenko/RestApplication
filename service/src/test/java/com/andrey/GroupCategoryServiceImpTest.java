@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static com.andrey.datatest.DateGeneratorForTest.ID;
@@ -25,8 +26,10 @@ class GroupCategoryServiceImpTest {
     private GroupCategoryRepository groupCategoryRepository;
 
     @Mock
-    private JpaRepository<GroupCategory, Long> repository ;
+    private BaseRepository<GroupCategory> repository;
 
+    @Mock
+    HttpServletRequest requestMethod;
 
     @Test
     void getById() {
@@ -55,7 +58,8 @@ class GroupCategoryServiceImpTest {
 
         //GIVEN
         GroupCategory groupCategory = DateGeneratorForTest.generateGroupCategory();
-        Mockito.when(repository.save(groupCategory)).thenReturn(groupCategory);
+        Mockito.doNothing().when(repository).add(any());
+        Mockito.when(requestMethod.getMethod()).thenReturn("POST");
 
         //WHEN
         groupCategoryService.save(groupCategory);
@@ -63,7 +67,7 @@ class GroupCategoryServiceImpTest {
 
 
         //THEN
-        Mockito.verify(repository).save(groupCategory);
+        Mockito.verify(repository).add(any());
         Mockito.verifyNoMoreInteractions(repository);
     }
 
