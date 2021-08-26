@@ -1,8 +1,6 @@
 package com.andrey;
 
-import com.andrey.criteria.MySpecification;
-import com.andrey.criteria.SearchCriteria;
-import com.andrey.criteria.SearchOperation;
+
 import com.andrey.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -32,6 +30,9 @@ public class AccountServiceImp extends BaseService<Account> implements AccountSe
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    RatesRepository ratesRepository;
+
 
 
     @Override
@@ -52,7 +53,20 @@ public class AccountServiceImp extends BaseService<Account> implements AccountSe
                 balance-=operation.getTotal_sum();
                 log.info("Balance = " + balance + ", total sum = " + operation.getTotal_sum());
             } else if(operation.getAccount_id_to() != null && operation.getAccount_id_to() == id){
-                balance+=operation.getTotal_sum();
+
+                if(operation.getAccount_id_from() != null &&
+                        operation.getAccount_id_to() != null &&
+
+                        (accountRepository.getById(operation.getAccount_id_from()).getCurrency_id() !=
+                                accountRepository.getById(operation.getAccount_id_to()).getCurrency_id() ) ){
+
+                    balance += operation.getTotal_sum() * ratesRepository.getByCurrencies(accountRepository.getById(operation.getAccount_id_from()).getCurrency_id(), accountRepository.getById(operation.getAccount_id_to()).getCurrency_id()) * 100 ;
+
+                }else{
+                    balance+=operation.getTotal_sum();
+                }
+
+
             }
 
         }

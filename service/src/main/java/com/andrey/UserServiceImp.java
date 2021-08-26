@@ -50,4 +50,16 @@ public class UserServiceImp extends BaseService<User> implements UserService, Us
         return user;
     }
 
+    @Override
+    public void save(User user){
+
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        if ("POST".equalsIgnoreCase(requestMethod.getMethod())) {
+            repository.add(user);
+        } else {
+            repository.update(user);
+        }
+    }
+
 }

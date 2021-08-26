@@ -1,9 +1,6 @@
 package com.andrey;
 
 import com.andrey.filter.Filter;
-import com.andrey.criteria.MySpecification;
-import com.andrey.criteria.SearchCriteria;
-import com.andrey.criteria.SearchOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

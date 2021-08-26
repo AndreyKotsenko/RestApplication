@@ -2,7 +2,7 @@ package com.andrey;
 
 import com.andrey.datatest.DateGeneratorForTest;
 import com.andrey.filter.Filter;
-import com.andrey.criteria.MySpecification;
+
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -10,7 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.jpa.repository.JpaRepository;
+
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.LinkedList;

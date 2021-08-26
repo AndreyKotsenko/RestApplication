@@ -7,6 +7,15 @@ INSERT IGNORE INTO currency VALUES (1, 'UAH');
 INSERT IGNORE INTO currency VALUES (2, 'USD');
 INSERT IGNORE INTO currency VALUES (3, 'EUR');
 
+
+--for rates
+INSERT IGNORE INTO rates VALUES (1, 1, 2, 0.037);
+INSERT IGNORE INTO rates VALUES (2, 1, 3, 0.032);
+INSERT IGNORE INTO rates VALUES (3, 2, 1, 26.66);
+INSERT IGNORE INTO rates VALUES (4, 2, 3, 0.85);
+INSERT IGNORE INTO rates VALUES (5, 3, 1, 31.25);
+INSERT IGNORE INTO rates VALUES (6, 3, 2, 1.17);
+
 --for type operation
 INSERT IGNORE INTO type_operation VALUES (1, 'Income');
 INSERT IGNORE INTO type_operation VALUES (2, 'Expense');

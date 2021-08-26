@@ -30,10 +30,17 @@ public class Start {
     public ResponseEntity<String> start(){
         List<User> users = userService.getAll();
 
+        log.info("Users = " + users);
+
         for(User user: users){
             user.setPassword(passwordEncoder.encode(user.getPassword()) );
             userService.save(user);
+
+            log.info("user = " + user);
         }
+
+
+        log.info("Users after = " + users);
 
         return new ResponseEntity<String>("Hello", HttpStatus.OK);
 

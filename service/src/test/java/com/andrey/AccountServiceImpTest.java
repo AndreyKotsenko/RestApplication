@@ -1,10 +1,10 @@
 package com.andrey;
 
-import com.andrey.criteria.MySpecification;
+
 import com.andrey.datatest.DateGeneratorForTest;
 import com.andrey.filter.Filter;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.connector.Request;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,11 +12,10 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.web.bind.annotation.RequestMethod;
+
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletRequestWrapper;
+
 
 import static com.andrey.datatest.DateGeneratorForTest.DATE;
 import static com.andrey.datatest.DateGeneratorForTest.ID;

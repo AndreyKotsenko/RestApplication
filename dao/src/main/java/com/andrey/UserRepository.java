@@ -22,7 +22,7 @@ public interface UserRepository extends BaseRepository<User>{
     void add(User user);
 
     @Update("Update users set first_name=#{first_name}, " +
-            " last_name=#{last_name} WHERE id=#{id}")
+            " last_name=#{last_name}, password = #{password} WHERE id=#{id}")
     void update(User user);
 
     @Delete("DELETE FROM users WHERE id = #{id}")

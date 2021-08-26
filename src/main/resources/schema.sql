@@ -20,6 +20,16 @@ CREATE TABLE IF NOT EXISTS currency (
 
 );
 
+CREATE TABLE IF NOT EXISTS rates (
+  id         INT AUTO_INCREMENT PRIMARY KEY,
+  id_currency_from       INT   NOT NULL,
+  id_currency_to      INT   NOT NULL,
+  rate_value       DOUBLE   NOT NULL,
+  FOREIGN KEY (id_currency_from) REFERENCES currency (id),
+  FOREIGN KEY (id_currency_to) REFERENCES currency (id)
+
+);
+
 CREATE TABLE IF NOT EXISTS account (
   id                INT AUTO_INCREMENT PRIMARY KEY,
   account_name      VARCHAR(50) NOT NULL,

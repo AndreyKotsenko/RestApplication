@@ -165,6 +165,22 @@ public class DateGeneratorForTest {
     }
 
 
+    //Generate for Rates
+    public static Rates generateRates(){
+        return new Rates(ID, 1l, 2l, 12.89);
+    }
+
+    public static List<Rates> generateRatesList(int count){
+        List<Rates> rates = new LinkedList<>();
+
+        for(int i = 0; i < count; i++){
+            rates.add(new Rates( (long)i, (long)i, (long)i + 1, new Random().nextInt(3)*10));
+        }
+
+        return rates;
+    }
+
+
     //Generate for Filter
     public static Filter generateFilter(){
         return new Filter();
